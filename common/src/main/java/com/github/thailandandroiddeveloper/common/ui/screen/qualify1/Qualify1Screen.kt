@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -28,6 +29,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -74,7 +76,10 @@ fun Qualify1Screen() {
             )
         }
     ) { innerPadding ->
-        UserProfileScreen(modifier = Modifier.padding(innerPadding))
+        UserProfileScreen(modifier = Modifier
+            .padding(innerPadding)
+//            .wrapContentSize()
+        )
     }
 }
 
@@ -82,11 +87,12 @@ fun Qualify1Screen() {
 fun UserProfileScreen(modifier: Modifier = Modifier) {
     Box(
         contentAlignment = Alignment.BottomCenter,
+        modifier = modifier.wrapContentSize()
     )
     {
         Box(
             contentAlignment = Alignment.BottomCenter,
-            modifier = modifier
+            modifier = Modifier
                 .padding(16.dp)
                 .clip(RoundedCornerShape(16.dp))
                 .width(379.dp)
@@ -95,13 +101,14 @@ fun UserProfileScreen(modifier: Modifier = Modifier) {
             Image(
                 painter = painterResource(id = R.drawable.img_qualify_1_profile),
                 contentDescription = null,
-//                contentScale = ContentScale.Fit,
-                modifier = Modifier.fillMaxSize()
+                contentScale = ContentScale.Fit,
+                modifier = Modifier.fillMaxWidth()
             )
             UserProfileDescription(
                 name = "John Doe",
                 gender = "Male",
                 descriptions = "Lorem ipsum dolor sit amet, cd nulla lacinia, quis fringilla lorem imperdiet. Proin in quam vel odio iaculis fringilla.",
+                modifier = Modifier.fillMaxWidth()
             )
         }
 
@@ -158,14 +165,12 @@ fun UserProfileDescription(
     name: String,
     gender: String,
     descriptions: String,
-//    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier
 ) {
     val verticalSpacer = 8.dp
     Column(
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-
+        modifier = modifier
             .background(color = MaterialTheme.colorScheme.primary.copy(alpha = .75f))
             .padding(20.dp)
     ) {
