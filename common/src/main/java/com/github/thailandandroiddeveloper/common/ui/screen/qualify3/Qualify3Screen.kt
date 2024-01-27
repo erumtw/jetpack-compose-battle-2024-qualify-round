@@ -1,10 +1,10 @@
 package com.github.thailandandroiddeveloper.common.ui.screen.qualify3
 
-import android.provider.CalendarContract.Colors
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,13 +16,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -36,7 +35,9 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,6 +52,8 @@ import androidx.compose.ui.unit.dp
 import com.github.thailandandroiddeveloper.common.R
 import com.github.thailandandroiddeveloper.common.ui.preview.Pixel7
 import com.github.thailandandroiddeveloper.common.ui.theme.AppTheme
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -95,8 +98,7 @@ fun Qualify3Screen() {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_qualify_3_calendar),
                             contentDescription = "Back",
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer
-
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
                         )
                     }
                     IconButton(onClick = { /*TODO*/ }) {
@@ -140,6 +142,10 @@ fun Qualify3Screen() {
 
 @Composable
 fun ProfilePhotoSection(modifier: Modifier = Modifier) {
+    var currentImageIndex by remember { mutableIntStateOf(0) }
+    var isAnimating by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
+
     val images = mutableListOf(
         R.drawable.img_qualify_3_photo_1,
         R.drawable.img_qualify_3_photo_2,
@@ -151,20 +157,39 @@ fun ProfilePhotoSection(modifier: Modifier = Modifier) {
             .fillMaxWidth()
             .height(320.dp)
     ) {
-        items(images) { img ->
+        itemsIndexed(images) { index, img ->
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(320.dp)
                     .padding(end = 16.dp)
+                    .clickable {
+                        if (index != currentImageIndex && !isAnimating) {
+                            isAnimating = true
+                            coroutineScope.launch {
+                                val delayMillis = 500L
+                                // Wait for the card to change color before animating
+                                delay(delayMillis / 2)
+                                currentImageIndex = index
+                                delay(delayMillis)
+                                isAnimating = false
+                            }
+                        }
+                    }
+                    .border(
+                        if (currentImageIndex == index) 2.dp else 0.dp,
+                        MaterialTheme.colorScheme.primary,
+                        RoundedCornerShape(16.dp)
+                    )
             ) {
                 Image(
                     painter = painterResource(id = img),
                     contentDescription = null,
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
-                        .height(320.dp)
-                        .width(160.dp)
+//                        .height(320.dp)
+//                        .width(160.dp)
+                        .clip(RoundedCornerShape(16.dp))
                 )
             }
         }
@@ -214,7 +239,7 @@ fun ChatSection(currentTag: Int) {
             .padding(horizontal = 16.dp)
             .fillMaxSize()
     ) {
-        var chatsTag = when (currentTag) {
+        val chatsTag = when (currentTag) {
             0 -> tag1Messages
             1 -> tag2Messages
             2 -> tag3Messages
@@ -264,11 +289,9 @@ fun ProfileCard(name: String, massage: String, imgProfile: Int) {
                     text = massage,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    softWrap = true,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 2,
-
-                    )
+                )
             }
         }
     }
