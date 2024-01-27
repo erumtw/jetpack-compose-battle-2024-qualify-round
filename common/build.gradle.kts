@@ -49,7 +49,9 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.7.5")
     ksp("com.airbnb.android:showkase-processor:1.0.2")
     implementation("com.airbnb.android:showkase:1.0.2")
+
     implementation("com.google.accompanist:accompanist-pager:0.32.0")
+    implementation("io.coil-kt:coil-compose:2.5.0")
 
 
     testImplementation("junit:junit:4.13.2")

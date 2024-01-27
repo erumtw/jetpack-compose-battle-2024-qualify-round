@@ -32,6 +32,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -57,6 +58,7 @@ fun Qualify2Screen() {
             .fillMaxSize()
             .wrapContentSize(Alignment.Center)
             .verticalScroll(rememberScrollState())
+            .background(Color.White)
     ) {
         Box(
             contentAlignment = Alignment.CenterEnd,
@@ -123,7 +125,11 @@ fun Qualify2Screen() {
                 })
             {
                 val bt = if (pagerState.currentPage == pages.size) "Get Started" else "Next"
-                Text(text = bt, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onPrimary)
+                Text(
+                    text = bt,
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
             }
         }
     }
