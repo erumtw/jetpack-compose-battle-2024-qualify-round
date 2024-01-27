@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -56,13 +57,14 @@ fun Qualify2Screen() {
 //        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
-            .wrapContentSize(Alignment.Center)
+//            .wrapContentSize(Alignment.Center)
             .verticalScroll(rememberScrollState())
             .background(Color.White)
     ) {
         Box(
             contentAlignment = Alignment.CenterEnd,
             modifier = Modifier
+                .height(68.dp)
                 .fillMaxWidth()
         ) {
             TextButton(
@@ -71,8 +73,9 @@ fun Qualify2Screen() {
                         //TODO: Naviate to Home Screen
                     }
                 },
-                modifier = Modifier
-                    .padding(8.dp)
+//                modifier = Modifier
+//                    .padding(8.dp),
+                contentPadding = PaddingValues(0.dp)
             ) {
                 Text(
                     text = "Skip",
@@ -81,7 +84,7 @@ fun Qualify2Screen() {
                 )
             }
         }
-        Spacer(Modifier.height(8.dp))
+//        Spacer(Modifier.height(8.dp))
         OnBoardingPages(pagerState = pagerState)
         Spacer(Modifier.height(32.dp))
         Box(
